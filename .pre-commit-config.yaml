@@ -21,8 +21,7 @@ repos:
       - id: isort
         name: isort
         description: 'Sort your imports'
-        exclude: (dist|json|data|data_format)/
-        args: ["--profile", "black"]
+        exclude: ((dist|json|data|data_format)/|__init__.py)
         # args: ['--check-only']
   - repo: https://github.com/econchick/interrogate
     rev: 1.5.0

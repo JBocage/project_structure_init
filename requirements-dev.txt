@@ -1,3 +1,4 @@
 pre-commit
 pytest
 black
+git+https://github.com/JBocage/makedoc.git@dev
