@@ -20,7 +20,12 @@ class AbstractTrainer(ABC):
         "val_acc_record",
     ]
 
-    def __init__(self, trainer_name="default_trainer", overwrite_checkpoint=False):
+    def __init__(
+        self,
+        trainer_name: str = "default_trainer",
+        overwrite_checkpoint: bool = False,
+        long_description: str = "",
+    ):
 
         self.name = trainer_name
         self.model: AbstractModel = self.MODEL_TYPE()
@@ -30,6 +35,8 @@ class AbstractTrainer(ABC):
         self.loss_record = []  # Loss of each batch
         self.val_loss_record = []  # Average val loss per epoch
         self.val_acc_record = []
+
+        self.long_description: str = long_description
 
         # LOADING TRAINING INFORMATION (if exist)
         self.save_dest = self.model.CHECKPOINT_DIR / self.name
@@ -58,6 +65,7 @@ class AbstractTrainer(ABC):
             "model_class": str(self.model.__class__),
             "model_type": str(self.model.__class__.__name__),
             "number_of_backwards": len(self.loss_record),
+            "long_description": self.long_description,
         }
         with open(self.save_dest / "training_nfo.json", "w+") as f:
             json.dump(training_nfo, f, indent=4, separators=(",", ": "), sort_keys=True)
