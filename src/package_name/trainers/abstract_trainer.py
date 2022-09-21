@@ -1,4 +1,5 @@
 """Implements a AbstractTrainer class"""
+import datetime
 import json
 from abc import ABC, abstractmethod
 
@@ -18,6 +19,8 @@ class AbstractTrainer(ABC):
         "loss_record",
         "val_loss_record",
         "val_acc_record",
+        "trainer_init_date",
+        "long_description",
     ]
 
     def __init__(
@@ -37,6 +40,7 @@ class AbstractTrainer(ABC):
         self.val_acc_record = []
 
         self.long_description: str = long_description
+        self.trainer_init_date: datetime.datetime = datetime.datetime.now()
 
         # LOADING TRAINING INFORMATION (if exist)
         self.save_dest = self.model.CHECKPOINT_DIR / self.name
@@ -62,6 +66,8 @@ class AbstractTrainer(ABC):
         trainer_state_dict = {k: self.__dict__[k] for k in self.SAVED_IN_STATE}
         joblib.dump(trainer_state_dict, self.save_dest / "trainer.state")
         training_nfo = {
+            "creation_date": self.trainer_init_date.strftime("%m/%d/%Y %H:%M:%S"),
+            "last_save_date": datetime.datetime.now().strftime("%m/%d/%Y %H:%M:%S"),
             "model_class": str(self.model.__class__),
             "model_type": str(self.model.__class__.__name__),
             "number_of_backwards": len(self.loss_record),
