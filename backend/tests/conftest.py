@@ -1,3 +1,4 @@
+"""Config file for pytest"""
 import pytest
 from app.application_factory import create_app
 from app.config import Settings, get_settings
@@ -6,6 +7,7 @@ from pydantic import BaseSettings
 
 
 def get_settings_override() -> BaseSettings:
+    """Overrides the app settings"""
     return Settings(environment="testing")
 
 
